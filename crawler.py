@@ -5,6 +5,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 import time
+import configparser
 
 
 def printArticleOutline(driver, index):
@@ -44,18 +45,23 @@ def printArticleOutline(driver, index):
 
 
 def crawl():
+    global config
+
     chrome_options = webdriver.ChromeOptions()
     chrome_options.add_experimental_option(
         "excludeSwitches", ["enable-logging"])   # disable some hardware logs
 
     driver = webdriver.Chrome(options=chrome_options)
-    driver.get("https://www.dcard.tw/f")
+    driver.get(config['domain']['url'])
 
-    for i in range(2, 50):
+    for i in range(2, int(config['data']['amount'])):
         printArticleOutline(driver, i)
 
     driver.quit()
 
 
 if __name__ == "__main__":
+    config = configparser.ConfigParser()
+    config.read('config.ini')
+
     crawl()
