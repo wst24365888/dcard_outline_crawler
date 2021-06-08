@@ -13,33 +13,33 @@ def printArticleOutline(driver, index):
     while type(data) is not WebElement:
         try:
             data = WebDriverWait(driver, 1).until(EC.presence_of_element_located(
-                (By.CSS_SELECTOR, f"div[data-index='{index}']")))
+                (By.CSS_SELECTOR, f"div[data-index='{index-1}']")))
         except:
             html = driver.find_element_by_tag_name('html')
             html.send_keys(Keys.PAGE_DOWN)
 
     try:
-        article = WebDriverWait(data, 1).until(EC.presence_of_element_located(
-            (By.XPATH, f"./article")))
+        article = WebDriverWait(data, 1).until(
+            EC.presence_of_element_located((By.XPATH, "./article")))
     except:
         return
 
     try:
-        title = WebDriverWait(data, 1).until(EC.presence_of_element_located(
-            (By.XPATH, f"./article/h2/a/span")))
+        title = WebDriverWait(article, 1).until(
+            EC.presence_of_element_located((By.XPATH, "./h2/a/span")))
         print(title.text)
 
-        link = WebDriverWait(data, 1).until(EC.presence_of_element_located(
-            (By.XPATH, f"./article/h2/a")))
+        link = WebDriverWait(article, 1).until(
+            EC.presence_of_element_located((By.XPATH, "./h2/a")))
         print(link.get_attribute("href"))
 
-        emoji_amount = WebDriverWait(data, 1).until(EC.presence_of_element_located(
-            (By.XPATH, f"./article/div[3]/div[1]/div/div[2]")))
-        print("emoji_amount:", emoji_amount.text)
+        emoji_amount = WebDriverWait(article, 1).until(
+            EC.presence_of_element_located((By.XPATH, "./div[3]/div[1]/div/div[2]")))
+        print(emoji_amount.text)
 
-        reply_amount = WebDriverWait(data, 1).until(EC.presence_of_element_located(
-            (By.XPATH, f"./article/div[3]/div[2]/div/span")))
-        print("reply_amount:", reply_amount.text)
+        reply_amount = WebDriverWait(article, 1).until(
+            EC.presence_of_element_located((By.XPATH, "./div[3]/div[2]/div/span")))
+        print(reply_amount.text)
     except:
         return
 
@@ -48,6 +48,7 @@ def crawl():
     global config
 
     chrome_options = webdriver.ChromeOptions()
+    chrome_options.add_argument("--headless")
     chrome_options.add_experimental_option(
         "excludeSwitches", ["enable-logging"])   # disable some hardware logs
 

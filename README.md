@@ -2,8 +2,9 @@
 
 ## Usage
 
-1. clone it
+1. Clone it, or [download zip](https://github.com/wst24365888/dcard_outline_crawler/archive/refs/heads/main.zip).
 
-2. run `requirements.ps1` if you're in Windows env
+2. Run `requirements.ps1` if you're in Windows env.
+If you're not, please follow `requirements.ps1` to install selenium, configparser, and [chromedriver](https://chromedriver.chromium.org/downloads).
 
-3. run `crawler.py`
+3. Run `crawler.py`.
