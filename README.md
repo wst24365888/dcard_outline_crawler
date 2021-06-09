@@ -7,4 +7,6 @@
 2. Run `requirements.ps1` if you're in Windows env.
 If you're not, please follow `requirements.ps1` to install selenium, configparser, and [chromedriver](https://chromedriver.chromium.org/downloads).
 
-3. Run `crawler.py`.
+3. Configure the amount of data to be crawled in `config.ini`.
+
+4. Run `crawler.py`.
