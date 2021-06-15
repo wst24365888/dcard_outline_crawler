@@ -6,9 +6,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.remote.webelement import WebElement
 import time
 import configparser
+from article_outline import ArticleOutline
+from firebase_service import FirebaseService
 
 
-def printArticleOutline(driver, index):
+def fetchArticleOutline(driver, index):
+    global firebaseService
+
     data = None
     while type(data) is not WebElement:
         try:
@@ -27,19 +31,22 @@ def printArticleOutline(driver, index):
     try:
         title = WebDriverWait(article, 1).until(
             EC.presence_of_element_located((By.XPATH, "./h2/a/span")))
-        print(title.text)
 
         link = WebDriverWait(article, 1).until(
             EC.presence_of_element_located((By.XPATH, "./h2/a")))
-        print(link.get_attribute("href"))
 
         emoji_amount = WebDriverWait(article, 1).until(
             EC.presence_of_element_located((By.XPATH, "./div[3]/div[1]/div/div[2]")))
-        print(emoji_amount.text)
 
         reply_amount = WebDriverWait(article, 1).until(
             EC.presence_of_element_located((By.XPATH, "./div[3]/div[2]/div/span")))
-        print(reply_amount.text)
+
+        articleOutline = ArticleOutline(title.text, link.get_attribute(
+            "href"), emoji_amount.text, reply_amount.text)
+
+        # articleOutline.printJSON()
+
+        firebaseService.addArticleOutline(articleOutline)
     except:
         return
 
@@ -56,7 +63,7 @@ def crawl():
     driver.get(config['domain']['url'])
 
     for i in range(2, int(config['data']['amount'])):
-        printArticleOutline(driver, i)
+        fetchArticleOutline(driver, i)
 
     driver.quit()
 
@@ -64,5 +71,7 @@ def crawl():
 if __name__ == "__main__":
     config = configparser.ConfigParser()
     config.read('config.ini')
+
+    firebaseService = FirebaseService()
 
     crawl()
