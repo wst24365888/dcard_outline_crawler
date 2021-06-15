@@ -73,5 +73,6 @@ if __name__ == "__main__":
     config.read('config.ini')
 
     firebaseService = FirebaseService()
+    # firebaseService.fetchData()
 
     crawl()

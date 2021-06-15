@@ -17,3 +17,10 @@ class FirebaseService:
         doc_ref = self.db.collection(
             'Dcard').document(articleOutline.link.split('/')[-1])
         doc_ref.set(articleOutline.toJSON())
+
+    def fetchData(self):
+        users_ref = self.db.collection('Dcard')
+        docs = users_ref.stream()
+
+        for doc in docs:
+            print(f'{doc.id} => {doc.to_dict()}')
